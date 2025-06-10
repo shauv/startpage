@@ -48,11 +48,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let matchCount = 0;
     let singleMatchBookmark = null;
+    let exactMatchBookmark = null;
 
     function updateBookmarks() {
         const query = searchInput.value.trim().toLowerCase();
         matchCount = 0;
         singleMatchBookmark = null;
+        exactMatchBookmark = null;
+
         bookmarks.forEach(bookmark => {
             const originalText = bookmark.dataset.original;
             const fullColor = bookmark.dataset.fullColor;
@@ -64,7 +67,13 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 if (originalText.toLowerCase().includes(query)) {
                     matchCount++;
-                    singleMatchBookmark = bookmark;
+                    singleMatchBookmark = bookmark; // last bookmark that matched
+
+                    // If it's an exact match (ignoring case), store it
+                    if (originalText.toLowerCase() === query) {
+                        exactMatchBookmark = bookmark;
+                    }
+
                     const escapedQuery = query.replace(/([.*+?^${}()|[\]\\])/g, "\\$1");
                     const regex = new RegExp(`(${escapedQuery})`, "ig");
                     const highlighted = originalText.replace(regex, `<span class="match" style="color: ${fullColor};">$1</span>`);
@@ -78,10 +87,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     searchInput.addEventListener("input", updateBookmarks);
+
     searchInput.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
             updateBookmarks();
-            if (matchCount === 1 && singleMatchBookmark) {
+            // If there's an exact match, open it regardless of match count.
+            if (exactMatchBookmark) {
+                window.open(exactMatchBookmark.href, '_blank');
+            }
+            // Otherwise, open if there's exactly one (partial) match.
+            else if (matchCount === 1 && singleMatchBookmark) {
                 window.open(singleMatchBookmark.href, '_blank');
             } else {
                 searchInput.classList.add("shake");
