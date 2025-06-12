@@ -19,6 +19,8 @@ body {
   background-color: rgba(10, 0, 21);
   background-size: cover;
   background-position: center;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 main {
@@ -41,8 +43,6 @@ main {
 .date {
   color: #fff;
   opacity: 1;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
 .time {
@@ -109,8 +109,6 @@ main {
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   border-radius: 5px;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
 .category {
