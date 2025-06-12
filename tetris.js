@@ -24,7 +24,7 @@ function createPiece(type) {
         default: return [];
     }
 }
-const colors = [null, "#00fff7", "#8f00ff", "#ff6c00", "#fffb00", "#00ff85", "#ff00ea", "#ff005b"];
+const colors = [null, "#00f6ff", "#007cff", "#ff8300", "#ffe700", "#00ff7f", "#aa00ff", "#ff1a1a"];
 const pieceColorIndex = { I: 1, J: 2, L: 3, O: 4, S: 5, T: 6, Z: 7 };
 const customOffsets = { I: { x: 0, y: 0.5 }, J: { x: 0.5, y: 0 }, L: { x: 0.5, y: 0 }, O: { x: 0, y: 0 }, S: { x: 0.5, y: 0 }, T: { x: 0.5, y: 0 }, Z: { x: 0.5, y: 0 } };
 
