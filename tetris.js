@@ -199,6 +199,7 @@ function playerDrop() { player.pos.y++; if (collide(arena, player)) player.pos.y
 function playerHardDrop() {
     while (!collide(arena, { matrix: player.matrix, pos: { x: player.pos.x, y: player.pos.y + 1 } })) player.pos.y++;
     merge(arena, player);
+    playLockSound();
     playerReset(); arenaSweep(); dropCounter = 0;
     hardDropLock = performance.now() + HARD_DROP_LOCK_DURATION;
 }
@@ -231,7 +232,40 @@ function arenaSweep() {
         const row = arena.splice(y, 1)[0].fill(0);
         arena.unshift(row); y++;
     }
-    if (clearedLines.length) glitchTimer = 10;
+    if (clearedLines.length) {
+        glitchTimer = 10;
+        playLineClearSounds();
+    }
+}
+
+// Preload audio for performance
+const lineClearAudio = new Audio("assets/line-clear.mp3");
+const lockAudio = new Audio("assets/lock.mp3");
+
+// Prime audio on first user interaction to reduce latency
+function primeAudio() {
+    [lineClearAudio, lockAudio].forEach(audio => {
+        audio.volume = 0;
+        audio.play().then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+            audio.volume = 1;
+        }).catch(() => { });
+    });
+    window.removeEventListener('keydown', primeAudio);
+    window.removeEventListener('mousedown', primeAudio);
+}
+window.addEventListener('keydown', primeAudio);
+window.addEventListener('mousedown', primeAudio);
+
+function playLineClearSounds() {
+    lineClearAudio.currentTime = 0;
+    lineClearAudio.play();
+}
+
+function playLockSound() {
+    lockAudio.currentTime = 0;
+    lockAudio.play();
 }
 
 // Main Loop
@@ -245,7 +279,9 @@ function update(time = 0) {
     if (isGrounded()) {
         player.lockDelayTimer += deltaTime;
         if (player.lockDelayTimer >= LOCK_DELAY) {
-            merge(arena, player); playerReset(); arenaSweep();
+            merge(arena, player);
+            playLockSound();
+            playerReset(); arenaSweep();
             dropCounter = 0; player.lockDelayTimer = 0;
             hardDropLock = performance.now() + HARD_DROP_LOCK_DURATION;
         }
