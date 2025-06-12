@@ -1,33 +1,21 @@
 *,
 *::before,
-*::after {
-  box-sizing: border-box;
-}
+*::after { box-sizing: border-box; }
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
+html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 
 body {
   font-family: 'Courier New', Courier, monospace;
-  line-height: 1.6;
-  background: radial-gradient(ellipse at center, rgba(10, 0, 21, 0.2) 50%, rgb(0, 0, 0, 1) 120%), url("assets/wallpaper.png");
-  background-color: rgba(10, 0, 21);
+  background: radial-gradient(ellipse at center, rgba(10,0,21,0.2) 50%, rgb(0,0,0,1) 120%), url("assets/wallpaper.png");
+  background-color: rgba(10,0,21);
   background-size: cover;
   background-position: center;
   -webkit-user-select: none;
   user-select: none;
+  line-height: 1.6;
 }
 
-main {
-  position: relative;
-  width: 100dvw;
-  height: 100dvh;
-}
+main { position: relative; width: 100dvw; height: 100dvh; }
 
 .main-container {
   width: 33dvw;
@@ -39,97 +27,44 @@ main {
   z-index: 1;
 }
 
-.time,
-.date {
-  color: #fff;
-  opacity: 1;
-}
+.time, .date { color: #fff; }
+.time { font-size: 4em; margin: -0.3em auto; }
+.date { font-size: 1.5em; }
 
-.time {
-  font-size: 4em;
-  margin: -0.3em auto;
-}
-
-.date {
-  font-size: 1.5em;
-}
-
-.search-container {
-  margin: 1em auto;
-}
-
+.search-container { margin: 1em auto; }
 .search-container input {
   width: 100%;
   padding: 0.5em;
   font-size: 1em;
   border: 0;
-  background: radial-gradient(ellipse at center, rgba(10, 0, 21, 0.5) 0%, rgba(0, 0, 0, 0.3) 100%);
+  background: radial-gradient(ellipse at center, rgba(10,0,21,0.5) 0%, rgba(0,0,0,0.3) 100%);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   color: #fff;
   border-radius: 5px;
 }
 
-/* Shake animation */
 @keyframes shake {
-  0% {
-    transform: translateX(0);
-  }
-
-  20% {
-    transform: translateX(-5px);
-  }
-
-  40% {
-    transform: translateX(5px);
-  }
-
-  60% {
-    transform: translateX(-5px);
-  }
-
-  80% {
-    transform: translateX(5px);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
 }
-
-.shake {
-  animation: shake 0.3s ease;
-}
+.shake { animation: shake 0.3s ease; }
 
 .bookmarks-container {
   font-family: sans-serif;
   display: flex;
   align-items: flex-start;
-  background: radial-gradient(ellipse at center, rgba(10, 0, 21, 0.5) 0%, rgba(0, 0, 0, 0.3) 100%);
+  background: radial-gradient(ellipse at center, rgba(10,0,21,0.5) 0%, rgba(0,0,0,0.3) 100%);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   border-radius: 5px;
 }
 
-.category {
-  flex: 1;
-}
-
-.category ul {
-  list-style: none;
-  text-align: justify;
-  padding: 0;
-  margin: 0;
-}
-
-.category li {
-  margin: 0.5em 1em;
-}
-
-.bookmark-item {
-  padding: 0;
-}
-
+.category { flex: 1; }
+.category ul { list-style: none; text-align: justify; padding: 0; margin: 0; }
+.category li { margin: 0.5em 1em; }
+.bookmark-item { padding: 0; }
 .bookmark-item a {
   text-decoration: none;
   font-size: 1em;
@@ -138,71 +73,23 @@ main {
   transition: transform 0.2s, filter 0.2s;
   transform-origin: center;
 }
+.bookmark-item a:hover { transform: scale(1.2); filter: brightness(1.5); }
 
-.bookmark-item a:hover {
-  transform: scale(1.2);
-  filter: brightness(1.5);
-}
-
-.bookmark-steam a {
-  color: #147CAF;
-}
-
-.bookmark-steamhunters a {
-  color: #7BB6FF;
-}
-
-.bookmark-steamdb a {
-  color: #FFF;
-}
-
-.bookmark-steamgifts a {
-  color: #929AA8;
-}
-
-.bookmark-pagywosg a {
-  color: #3D758B;
-}
-
-.bookmark-youtube a {
-  color: #CD201F;
-}
-
-.bookmark-reddit a {
-  color: #FF4500;
-}
-
-.bookmark-myanimelist a {
-  color: #2C51A2;
-}
-
-.bookmark-animekai a {
-  color: #65A45A;
-}
-
-.bookmark-osu a {
-  color: #E15A97;
-}
-
-.bookmark-office a {
-  color: #EB3B00;
-}
-
-.bookmark-copilot a {
-  color: #2699C5;
-}
-
-.bookmark-monkeytype a {
-  color: #F3B801;
-}
-
-.bookmark-vanguard a {
-  color: #96151D;
-}
-
-.bookmark-translate a {
-  color: #4E8DF3;
-}
+.bookmark-steam a { color: #147CAF; }
+.bookmark-steamhunters a { color: #7BB6FF; }
+.bookmark-steamdb a { color: #FFF; }
+.bookmark-steamgifts a { color: #929AA8; }
+.bookmark-pagywosg a { color: #3D758B; }
+.bookmark-youtube a { color: #CD201F; }
+.bookmark-reddit a { color: #FF4500; }
+.bookmark-myanimelist a { color: #2C51A2; }
+.bookmark-animekai a { color: #65A45A; }
+.bookmark-osu a { color: #E15A97; }
+.bookmark-office a { color: #EB3B00; }
+.bookmark-copilot a { color: #2699C5; }
+.bookmark-monkeytype a { color: #F3B801; }
+.bookmark-vanguard a { color: #96151D; }
+.bookmark-translate a { color: #4E8DF3; }
 
 .tetris-container {
   position: absolute;
@@ -211,34 +98,24 @@ main {
   z-index: 2;
   display: flex;
   gap: 20px;
+  transition: transform 0.5s cubic-bezier(.77,0,.18,1);
 }
+.tetris-container.closed { transform: translateY(calc(-100% - 47px)); }
+.tetris-container:not(.closed) .tetris-t-icon { transform: rotate(180deg); transition: transform 0.5s; }
+.tetris-container:not(.closed) .tetris-handle:hover .tetris-t-icon { transform: rotate(180deg) scale(1.2); }
 
-.playfield-container,
-#preview,
-#hold {
+.playfield-container, #preview, #hold {
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
-  border-radius: 5px;
   border: 1px solid #fff;
+  border-radius: 5px;
   padding: 5px;
 }
+.playfield-container { border-radius: 5px 5px 0 5px; }
+#tetris { background: transparent; display: block; }
 
-#tetris {
-  background: transparent;
-  display: block;
-}
-
-.side-widgets {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-.widget {
-  position: relative;
-  text-align: left;
-}
-
+.side-widgets { display: flex; flex-direction: column; gap: 40px; }
+.widget { position: relative; text-align: left; }
 .label {
   position: absolute;
   top: -20px;
@@ -250,25 +127,66 @@ main {
   display: block;
 }
 
+.tetris-handle {
+  position: absolute;
+  left: 162px;
+  bottom: -34px;
+  width: 50px;
+  height: 35px;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  background: transparent;
+  border: 1px solid #fff;
+  border-radius: 0 0 5px 5px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tetris-handle:focus { outline: none; box-shadow: none; }
+.tetris-handle:hover .tetris-t-icon { transform: scale(1.2); transition: transform 0.2s; }
+
+.tetris-t-icon {
+  --t-square: 8px;
+  width: calc(var(--t-square) * 3);
+  height: calc(var(--t-square) * 2);
+  position: relative;
+  display: inline-block;
+  transition: transform 0.5s;
+}
+.tetris-t-icon::before {
+  content: "";
+  position: absolute;
+  width: calc(var(--t-square) * 3);
+  height: var(--t-square);
+  top: 0;
+  left: 0;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  border-radius: 1px;
+  background: transparent;
+}
+.tetris-t-icon::after {
+  content: "";
+  position: absolute;
+  width: var(--t-square);
+  height: calc(var(--t-square) * 2);
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  border-radius: 1px;
+  background: transparent;
+}
+
 .github-container {
   position: fixed;
   right: 15px;
   bottom: 10px;
 }
-
-.github-btn {
-  display: inline-block;
-  transition: transform 0.2s;
-}
-
-.github-btn img {
-  width: 25px;
-  height: auto;
-  opacity: 0.2;
-  transition: transform 0.2s, opacity 0.2s;
-}
-
-.github-btn:hover img {
-  transform: scale(1.2);
-  opacity: 1;
-}
+.github-btn { display: inline-block; transition: transform 0.2s; }
+.github-btn img { width: 25px; height: auto; opacity: 0.2; transition: transform 0.2s, opacity 0.2s; }
+.github-btn:hover img { transform: scale(1.2); opacity: 1; }
