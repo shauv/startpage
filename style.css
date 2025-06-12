@@ -104,7 +104,7 @@ main { position: relative; width: 100dvw; height: 100dvh; }
 .tetris-container:not(.closed) .tetris-t-icon { transform: rotate(180deg); transition: transform 0.5s; }
 .tetris-container:not(.closed) .tetris-handle:hover .tetris-t-icon { transform: rotate(180deg) scale(1.2); }
 
-.playfield-container, #preview, #hold {
+.playfield-container, #preview, #hold, .tetris-handle {
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   border: 1px solid #fff;
@@ -130,13 +130,12 @@ main { position: relative; width: 100dvw; height: 100dvh; }
 .tetris-handle {
   position: absolute;
   left: 162px;
-  bottom: -34px;
+  bottom: -35px;
   width: 50px;
   height: 35px;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
   background: transparent;
   border: 1px solid #fff;
+  border-top: none;
   border-radius: 0 0 5px 5px;
   color: #fff;
   cursor: pointer;
