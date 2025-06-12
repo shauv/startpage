@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 
-/* Global styles */
 html,
 body {
   height: 100%;
@@ -14,7 +13,7 @@ body {
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   line-height: 1.6;
   background: radial-gradient(ellipse at center, rgba(10, 0, 21, 0.2) 50%, rgb(0, 0, 0, 1) 120%), url("assets/wallpaper.png");
   background-color: rgba(10, 0, 21);
@@ -23,32 +22,36 @@ body {
 }
 
 main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
 }
 
 .content-container {
   width: 33vw;
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
   text-align: center;
+  z-index: 1;
+}
+
+.time,
+.date {
+  color: #fff;
+  opacity: 1;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .time {
   font-size: 4em;
-  color: #fff;
   margin: -0.3em auto;
-  opacity: 1;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
 .date {
   font-size: 1.5em;
-  color: #fff;
-  opacity: 1;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
 .search-container {
@@ -60,7 +63,7 @@ main {
   padding: 0.5em;
   font-size: 1em;
   border: 0;
-  background: radial-gradient(ellipse at center, rgba(10, 0, 21, 0.5) 0%, rgb(0, 0, 0, 0.3) 100%);
+  background: radial-gradient(ellipse at center, rgba(10, 0, 21, 0.5) 0%, rgba(0, 0, 0, 0.3) 100%);
   backdrop-filter: blur(5px);
   color: #fff;
   border-radius: 5px;
@@ -98,9 +101,10 @@ main {
 }
 
 .bookmarks-container {
+  font-family: sans-serif;
   display: flex;
   align-items: flex-start;
-  background: radial-gradient(ellipse at center, rgba(10, 0, 21, 0.5) 0%, rgb(0, 0, 0, 0.3) 100%);
+  background: radial-gradient(ellipse at center, rgba(10, 0, 21, 0.5) 0%, rgba(0, 0, 0, 0.3) 100%);
   backdrop-filter: blur(5px);
   border-radius: 5px;
   -webkit-user-select: none;
@@ -131,7 +135,7 @@ main {
   font-size: 1em;
   opacity: 1;
   display: inline-block;
-  transition: transform 0.2s ease, filter 0.2s ease;
+  transition: transform 0.2s, filter 0.2s;
   transform-origin: center;
 }
 
@@ -140,7 +144,6 @@ main {
   filter: brightness(1.5);
 }
 
-/* Bookmark colors */
 .bookmark-steam a {
   color: #147CAF;
 }
@@ -201,6 +204,51 @@ main {
   color: #4E8DF3;
 }
 
+.tetris-container {
+  position: absolute;
+  left: 50px;
+  top: 65px;
+  z-index: 2;
+  display: flex;
+  gap: 20px;
+}
+
+.playfield-container,
+#preview,
+#hold {
+  backdrop-filter: blur(5px);
+  border-radius: 5px;
+  border: 1px solid #fff;
+  padding: 5px;
+}
+
+#tetris {
+  background: transparent;
+  display: block;
+}
+
+.side-widgets {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.widget {
+  position: relative;
+  text-align: left;
+}
+
+.label {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 0.9em;
+  margin: 0;
+  display: block;
+}
+
 .github-container {
   position: fixed;
   right: 15px;
@@ -209,14 +257,14 @@ main {
 
 .github-btn {
   display: inline-block;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s;
 }
 
 .github-btn img {
   width: 25px;
   height: auto;
   opacity: 0.2;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: transform 0.2s, opacity 0.2s;
 }
 
 .github-btn:hover img {
