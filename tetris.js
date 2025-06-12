@@ -200,7 +200,8 @@ function playerHardDrop() {
     while (!collide(arena, { matrix: player.matrix, pos: { x: player.pos.x, y: player.pos.y + 1 } })) player.pos.y++;
     merge(arena, player);
     playLockSound();
-    playerReset(); arenaSweep(); dropCounter = 0;
+    playerReset(); holdUsed = false;
+    arenaSweep(); dropCounter = 0;
     hardDropLock = performance.now() + HARD_DROP_LOCK_DURATION;
 }
 function playerHold() {
@@ -218,8 +219,12 @@ function playerReset() {
     player.type = nextPieceType; player.matrix = createPiece(player.type);
     player.pos.y = 0;
     player.pos.x = ((arena[0].length / 2) | 0) - ((player.matrix[0].length / 2) | 0);
-    nextPieceType = getNextPieceType(); updatePreview(); holdUsed = false;
-    if (collide(arena, player)) arena.forEach(row => row.fill(0));
+    nextPieceType = getNextPieceType(); updatePreview();
+    if (collide(arena, player)) {
+        arena.forEach(row => row.fill(0));
+        holdPiece = null;
+        updateHold();
+    }
 }
 
 // Line Clear & Glitch
@@ -281,7 +286,8 @@ function update(time = 0) {
         if (player.lockDelayTimer >= LOCK_DELAY) {
             merge(arena, player);
             playLockSound();
-            playerReset(); arenaSweep();
+            playerReset(); holdUsed = false;
+            arenaSweep();
             dropCounter = 0; player.lockDelayTimer = 0;
             hardDropLock = performance.now() + HARD_DROP_LOCK_DURATION;
         }
