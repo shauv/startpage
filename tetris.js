@@ -304,3 +304,11 @@ tetrisHandle.addEventListener('click', e => {
   if (wasClosed) startGame();
   else pauseGame();
 });
+tetrisHandle.addEventListener('mouseenter', () => {
+  if (tetrisContainer.classList.contains('closed')) {
+    tetrisContainer.classList.add('hovered');
+  }
+});
+tetrisHandle.addEventListener('mouseleave', () => {
+  tetrisContainer.classList.remove('hovered');
+});
