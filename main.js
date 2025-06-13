@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateTimeAndDate() {
         const now = new Date();
         document.querySelector(".time").textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-        document.querySelector(".date").textContent = `${pad(now.getMonth() + 1)}/${pad(now.getDate())}/${now.getFullYear()}`;
+        document.querySelector(".date").textContent = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
     }
     updateTimeAndDate();
     setInterval(updateTimeAndDate, 1000);
