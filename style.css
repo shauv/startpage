@@ -1,9 +1,8 @@
 *,
 *::before,
 *::after { box-sizing: border-box; }
-
-html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; }
-
+html,
+body { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 body {
   font-family: 'Courier New', Courier, monospace;
   background: radial-gradient(ellipse at center, rgba(10,0,21,0.2) 50%, rgb(0,0,0,1) 120%), url("assets/wallpaper.png");
@@ -14,7 +13,6 @@ body {
   user-select: none;
   line-height: 1.6;
 }
-
 main { position: relative; width: 100dvw; height: 100dvh; }
 
 .main-container {
@@ -26,11 +24,10 @@ main { position: relative; width: 100dvw; height: 100dvh; }
   text-align: center;
   z-index: 1;
 }
-
-.time, .date { color: #fff; }
+.time,
+.date { color: #fff; }
 .time { font-size: 4em; margin: -0.3em auto; }
 .date { font-size: 1.5em; }
-
 .search-container { margin: 1em auto; }
 .search-container input {
   width: 100%;
@@ -44,13 +41,6 @@ main { position: relative; width: 100dvw; height: 100dvh; }
   border-radius: 5px;
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-5px); }
-  40%, 80% { transform: translateX(5px); }
-}
-.shake { animation: shake 0.3s ease; }
-
 .bookmarks-container {
   font-family: sans-serif;
   display: flex;
@@ -60,7 +50,6 @@ main { position: relative; width: 100dvw; height: 100dvh; }
   backdrop-filter: blur(5px);
   border-radius: 5px;
 }
-
 .category { flex: 1; }
 .category ul { list-style: none; text-align: justify; padding: 0; margin: 0; }
 .category li { margin: 0.5em 1em; }
@@ -74,7 +63,6 @@ main { position: relative; width: 100dvw; height: 100dvh; }
   transform-origin: center;
 }
 .bookmark-item a:hover { transform: scale(1.2); filter: brightness(1.5); }
-
 .bookmark-steam a { color: #147CAF; }
 .bookmark-steamhunters a { color: #7BB6FF; }
 .bookmark-steamdb a { color: #FFF; }
@@ -103,16 +91,15 @@ main { position: relative; width: 100dvw; height: 100dvh; }
 }
 .tetris-container.closed { transform: translateY(calc(-100% - 47px)); }
 .tetris-container:not(.closed),
-.tetris-container.hovered {
-  opacity: 1;
-}
+.tetris-container.hovered { opacity: 1; }
 .tetris-container:not(.closed) .tetris-t-icon { transform: rotate(180deg); transition: transform 0.5s; }
 .tetris-container:not(.closed) .tetris-handle:hover .tetris-t-icon { transform: rotate(180deg) scale(1.2); }
-.tetris-container.closed .tetris-handle:hover {
-  opacity: 1;
-}
+.tetris-container.closed .tetris-handle:hover { opacity: 1; }
 
-.playfield-container, #preview, #hold, .tetris-handle {
+.playfield-container,
+#preview,
+#hold,
+.tetris-handle {
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   border: 1px solid #fff;
@@ -121,7 +108,6 @@ main { position: relative; width: 100dvw; height: 100dvh; }
 }
 .playfield-container { border-radius: 5px 5px 0 5px; }
 #tetris { background: transparent; display: block; }
-
 .side-widgets { display: flex; flex-direction: column; gap: 40px; }
 .widget { position: relative; text-align: left; }
 .label {
@@ -130,7 +116,6 @@ main { position: relative; width: 100dvw; height: 100dvh; }
   left: 50%;
   transform: translateX(-50%);
   color: #fff;
-  font-family: sans-serif;
   font-size: 0.8em;
   margin: 0;
   display: block;
@@ -157,10 +142,7 @@ main { position: relative; width: 100dvw; height: 100dvh; }
 .tetris-handle:focus { outline: none; box-shadow: none; }
 .tetris-handle:hover .tetris-t-icon { transform: scale(1.2); transition: transform 0.2s; }
 .tetris-handle:hover,
-.tetris-container:not(.closed) .tetris-handle {
-  opacity: 1;
-}
-
+.tetris-container:not(.closed) .tetris-handle { opacity: 1; }
 .tetris-t-icon {
   --t-square: 8px;
   width: calc(var(--t-square) * 3);
@@ -195,6 +177,92 @@ main { position: relative; width: 100dvw; height: 100dvh; }
   background: transparent;
 }
 
+#nullWindow {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  width: 133px;
+  height: 100px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  background: rgba(45, 0, 68, 0.2);
+  display: flex;
+  flex-direction: column;
+  transition: right 1s, top 1s, width 0.5s, height 0.5s, opacity 0.5s;
+  z-index: 9999;
+  opacity: 0.2;
+}
+#nullWindow.minimized {
+  width: 133px !important;
+  height: 100px !important;
+  opacity: 0.2;
+}
+#nullWindow.maximized {
+  width: 200px !important;
+  height: 150px !important;
+  opacity: 1;
+}
+#nullHeader {
+  color: #fff;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: 1px solid #fff;
+  cursor: grab;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.53em;
+  padding: 3.33px 6.67px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: font-size 0.5s, padding 0.5s;
+  position: relative;
+}
+#nullWindow.maximized #nullHeader {
+  font-size: 0.8em;
+  padding: 5px 10px;
+}
+#nullWindow.minimized #nullHeader {
+  font-size: 0.53em;
+  padding: 3.33px 6.67px;
+}
+#nullBody {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: white;
+  font-family: monospace;
+  transition: font-size 0.5s;
+}
+#nullWindow.maximized #nullBody { font-size: 30px; }
+#nullWindow.minimized #nullBody { font-size: 20px; }
+#toggleNull {
+  position: fixed;
+  top: 0;
+  right: -6%;
+  bottom: 0;
+  font-size: 2em;
+  width: 2em;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  line-height: 1;
+  text-align: center;
+  z-index: 1;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .github-container {
   position: fixed;
   right: 15px;
@@ -203,3 +271,13 @@ main { position: relative; width: 100dvw; height: 100dvh; }
 .github-btn { display: inline-block; transition: transform 0.2s; }
 .github-btn img { width: 25px; height: auto; opacity: 0.2; transition: transform 0.2s, opacity 0.2s; }
 .github-btn:hover img { transform: scale(1.2); opacity: 1; }
+
+@keyframes shake {
+  0%,
+  100% { transform: translateX(0); }
+  20%,
+  60% { transform: translateX(-5px); }
+  40%,
+  80% { transform: translateX(5px); }
+}
+.shake { animation: shake 0.3s ease; }

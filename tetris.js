@@ -12,22 +12,21 @@ const arena = createMatrix(10, 20);
 
 function createPiece(type) {
   switch (type) {
-    case "I": return [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]];
-    case "J": return [[2,0,0],[2,2,2],[0,0,0]];
-    case "L": return [[0,0,3],[3,3,3],[0,0,0]];
-    case "O": return [[4,4],[4,4]];
-    case "S": return [[0,5,5],[5,5,0],[0,0,0]];
-    case "T": return [[0,6,0],[6,6,6],[0,0,0]];
-    case "Z": return [[7,7,0],[0,7,7],[0,0,0]];
+    case "I": return [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]];
+    case "J": return [[2, 0, 0], [2, 2, 2], [0, 0, 0]];
+    case "L": return [[0, 0, 3], [3, 3, 3], [0, 0, 0]];
+    case "O": return [[4, 4], [4, 4]];
+    case "S": return [[0, 5, 5], [5, 5, 0], [0, 0, 0]];
+    case "T": return [[0, 6, 0], [6, 6, 6], [0, 0, 0]];
+    case "Z": return [[7, 7, 0], [0, 7, 7], [0, 0, 0]];
     default: return [];
   }
 }
 const colors = [null, "#00f6ff", "#007cff", "#ff8300", "#ffe700", "#00ff7f", "#aa00ff", "#ff1a1a"];
-const pieceColorIndex = { I:1, J:2, L:3, O:4, S:5, T:6, Z:7 };
-const customOffsets = { I:{x:0,y:0.5}, J:{x:0.5,y:0}, L:{x:0.5,y:0}, O:{x:0,y:0}, S:{x:0.5,y:0}, T:{x:0.5,y:0}, Z:{x:0.5,y:0} };
+const customOffsets = { I: { x: 0, y: 0.5 }, J: { x: 0.5, y: 0 }, L: { x: 0.5, y: 0 }, O: { x: 0, y: 0 }, S: { x: 0.5, y: 0 }, T: { x: 0.5, y: 0 }, Z: { x: 0.5, y: 0 } };
 
 let bag = [];
-function refillBag() { bag = ["I","J","L","O","S","T","Z"].sort(() => Math.random() - 0.5); }
+function refillBag() { bag = ["I", "J", "L", "O", "S", "T", "Z"].sort(() => Math.random() - 0.5); }
 function getNextPieceType() { if (!bag.length) refillBag(); return bag.pop(); }
 let nextPieceType = getNextPieceType();
 
@@ -216,6 +215,7 @@ function arenaSweep() {
   if (clearedLines.length) {
     glitchTimer = 10;
     playLineClearSounds();
+    if (window.showNullShockFace) window.showNullShockFace(clearedLines.length);
   }
 }
 
@@ -229,7 +229,7 @@ function primeAudio() {
       audio.pause();
       audio.currentTime = 0;
       audio.volume = 1;
-    }).catch(() => {});
+    }).catch(() => { });
   });
   window.removeEventListener('keydown', primeAudio);
   window.removeEventListener('mousedown', primeAudio);
@@ -305,9 +305,7 @@ tetrisHandle.addEventListener('click', e => {
   else pauseGame();
 });
 tetrisHandle.addEventListener('mouseenter', () => {
-  if (tetrisContainer.classList.contains('closed')) {
-    tetrisContainer.classList.add('hovered');
-  }
+  if (tetrisContainer.classList.contains('closed')) tetrisContainer.classList.add('hovered');
 });
 tetrisHandle.addEventListener('mouseleave', () => {
   tetrisContainer.classList.remove('hovered');
