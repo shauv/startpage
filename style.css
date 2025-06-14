@@ -130,7 +130,8 @@ main { position: relative; width: 100dvw; height: 100dvh; }
   left: 50%;
   transform: translateX(-50%);
   color: #fff;
-  font-size: 0.9em;
+  font-family: sans-serif;
+  font-size: 0.8em;
   margin: 0;
   display: block;
 }
