@@ -13,54 +13,84 @@
         sad: "[• ʌ •]"
     };
     let currentFace = faces.neutral, lastCursorX = window.innerWidth / 2;
-    let isDragging = false, offsetRight = 0, offsetY = 0, faceTimeout = null, hasBeenMaximized = false;
+    let isDragging = false, offsetRight = 0, offsetY = 0;
+    let faceTimeout = null, hasBeenMaximized = false;
     let pettingHistory = [], lastPetX = null, pettingDetected = false, pettingTimeout = null;
-    let tetrisMonitorTimeout = null, tetrisIsOpen = false, nullDockedToTetris = false, autonomousEnabled = true;
+    let tetrisMonitorTimeout = null, nullDockedToTetris = false, autonomousEnabled = true;
 
     setMinimized(true);
 
+    const CORNER_THRESHOLD = 10;
+
     nullHeader.addEventListener("mousedown", e => {
-        if (!nullWindow.classList.contains("maximized")) return;
+        if (!nullWindow.classList.contains("maximized") && !nullWindow.classList.contains("minimized")) return;
         isDragging = true;
-        nullWindow.style.transition = "none";
+        nullWindow.style.transition = "right 0s, top 0s, width 0.5s, height 0.5s, opacity 0.5s";
         offsetRight = window.innerWidth - e.clientX - parseInt(getComputedStyle(nullWindow).right);
         offsetY = e.clientY - nullWindow.offsetTop;
         nullHeader.style.cursor = "grabbing";
     });
 
     document.addEventListener("mousemove", e => {
-        if (isDragging && nullWindow.classList.contains("maximized")) {
-            let newRight = window.innerWidth - e.clientX - offsetRight;
-            let newY = e.clientY - offsetY;
-            const minRight = 10, maxRight = window.innerWidth - nullWindow.offsetWidth - 10;
-            const minY = 10, maxY = window.innerHeight - nullWindow.offsetHeight - 10;
-            nullWindow.style.right = Math.max(minRight, Math.min(newRight, maxRight)) + "px";
-            nullWindow.style.top = Math.max(minY, Math.min(newY, maxY)) + "px";
+        if (!isDragging) return;
+        let newRight = window.innerWidth - e.clientX - offsetRight;
+        let newY = e.clientY - offsetY;
+        const minRight = 10, maxRight = window.innerWidth - nullWindow.offsetWidth - 10;
+        const minY = 10, maxY = window.innerHeight - nullWindow.offsetHeight - 10;
+        const right = Math.max(minRight, Math.min(newRight, maxRight));
+        const top = Math.max(minY, Math.min(newY, maxY));
+
+        if (nullWindow.classList.contains("maximized") && right === CORNER_THRESHOLD && top === CORNER_THRESHOLD) {
+            setMinimized(false);
+            nullWindow.style.right = "10px";
+            nullWindow.style.top = "10px";
+            return;
         }
+        if (nullWindow.classList.contains("minimized") && (right > CORNER_THRESHOLD || top > CORNER_THRESHOLD)) {
+            setMaximized();
+        }
+        nullWindow.style.right = right + "px";
+        nullWindow.style.top = top + "px";
         lastCursorX = e.clientX;
         updateFaceDisplay();
     });
 
     document.addEventListener("mouseup", () => {
-        nullWindow.style.transition = "";
+        nullWindow.style.transition = "right 1s, top 1s, width 0.5s, height 0.5s, opacity 0.5s";
         isDragging = false;
         nullHeader.style.cursor = "grab";
-        if (!tetrisContainer.classList.contains('closed') && nullWindow.classList.contains("maximized") && !nullWindow.classList.contains("minimized")) {
+        const right = parseInt(nullWindow.style.right, 10) || 0;
+        const top = parseInt(nullWindow.style.top, 10) || 0;
+        if (nullWindow.classList.contains("maximized") && right === CORNER_THRESHOLD && top === CORNER_THRESHOLD) {
+            setMinimized(false);
+            nullWindow.style.right = "10px";
+            nullWindow.style.top = "10px";
+            return;
+        }
+        if (nullWindow.classList.contains("minimized") && (right > CORNER_THRESHOLD || top > CORNER_THRESHOLD)) {
+            setMaximized();
+        }
+        if (!tetrisContainer.classList.contains('closed') && nullWindow.classList.contains("maximized")) {
             if (window._nullDockTimeout) clearTimeout(window._nullDockTimeout);
             window._nullDockTimeout = setTimeout(() => {
-                if (nullWindow.classList.contains("maximized") && !nullWindow.classList.contains("minimized") && !tetrisContainer.classList.contains('closed')) {
+                if (nullWindow.classList.contains("maximized") && !tetrisContainer.classList.contains('closed')) {
                     dockNullToTetris();
                 }
             }, 2000);
         }
     });
 
+    document.addEventListener("mousemove", e => {
+        lastCursorX = e.clientX;
+        updateFaceDisplay();
+    });
+
     function getDirectionalFace(baseFace, cursorX, centerX) {
         if (nullDockedToTetris) {
-            const start = baseFace.charAt(0), end = baseFace.charAt(baseFace.length - 1), inner = baseFace.slice(1, -1);
+            const start = baseFace[0], end = baseFace.at(-1), inner = baseFace.slice(1, -1);
             return start + inner + "  " + end;
         }
-        const delta = 15, start = baseFace.charAt(0), end = baseFace.charAt(baseFace.length - 1), inner = baseFace.slice(1, -1);
+        const delta = 15, start = baseFace[0], end = baseFace.at(-1), inner = baseFace.slice(1, -1);
         if (cursorX < centerX - delta) return start + inner + "  " + end;
         if (cursorX > centerX + delta) return start + "  " + inner + end;
         return baseFace;
@@ -82,7 +112,7 @@
         if (!isInitial && hasBeenMaximized) showTemporaryFace(faces.sad, 2000);
         if (nullDockedToTetris) undockNullFromTetris();
     }
-    function setMaximized() {
+    function setMaximized(isFromButton = false) {
         nullWindow.classList.remove("minimized");
         nullWindow.classList.add("maximized");
         nullWindow.style.width = "200px";
@@ -90,6 +120,14 @@
         toggleButton.textContent = "-";
         hasBeenMaximized = true;
         showTemporaryFace(faces.shock, 2000);
+        if (isFromButton) {
+            const right = parseInt(nullWindow.style.right, 10) || 0;
+            const top = parseInt(nullWindow.style.top, 10) || 0;
+            if (right <= CORNER_THRESHOLD && top <= CORNER_THRESHOLD) {
+                nullWindow.style.right = (CORNER_THRESHOLD + 10) + "px";
+                nullWindow.style.top = (CORNER_THRESHOLD + 10) + "px";
+            }
+        }
         if (!tetrisContainer.classList.contains('closed')) {
             if (window._nullDockTimeout) clearTimeout(window._nullDockTimeout);
             window._nullDockTimeout = setTimeout(() => {
@@ -103,7 +141,7 @@
         e.stopPropagation();
         toggleButton.blur();
         if (nullWindow.classList.contains("maximized")) setMinimized(false);
-        else setMaximized();
+        else setMaximized(true);
     });
 
     function showTemporaryFace(face, duration) {
@@ -234,6 +272,7 @@
             }, 2000);
         }
     }
+    let tetrisIsOpen = false;
     const tetrisObserver = new MutationObserver(monitorTetrisState);
     tetrisObserver.observe(tetrisContainer, { attributes: true, attributeFilter: ['class'] });
 

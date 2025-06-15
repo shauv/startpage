@@ -198,6 +198,11 @@ main { position: relative; width: 100dvw; height: 100dvh; }
   width: 133px !important;
   height: 100px !important;
   opacity: 0.2;
+  transition: opacity 0.2s, width 0.5s, height 0.5s;
+}
+#nullWindow.minimized:hover,
+#nullWindow.minimized #nullHeader:hover {
+  opacity: 1.0;
 }
 #nullWindow.maximized {
   width: 200px !important;
@@ -242,14 +247,15 @@ main { position: relative; width: 100dvw; height: 100dvh; }
 #nullWindow.minimized #nullBody { font-size: 20px; }
 #toggleNull {
   position: fixed;
-  top: 0;
-  right: -6%;
+  top: 7%;
+  right: 0;
   bottom: 0;
   font-size: 2em;
-  width: 2em;
-  height: 100%;
-  background: transparent;
+  width: 1em;
+  height: 1em;
   border: none;
+  border-radius: 6px;
+  background: rgba(45, 0, 68, 0.3);
   color: #fff;
   cursor: pointer;
   line-height: 1;
