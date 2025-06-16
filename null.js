@@ -17,10 +17,14 @@
     let faceTimeout = null, hasBeenMaximized = false;
     let pettingHistory = [], lastPetX = null, pettingDetected = false, pettingTimeout = null;
     let tetrisMonitorTimeout = null, nullDockedToTetris = false, autonomousEnabled = true;
+    let isMouseDown = false;
 
     setMinimized(true);
 
     const CORNER_THRESHOLD = 10;
+
+    document.addEventListener("mousedown", () => { isMouseDown = true; });
+    document.addEventListener("mouseup", () => { isMouseDown = false; });
 
     nullHeader.addEventListener("mousedown", e => {
         if (!nullWindow.classList.contains("maximized") && !nullWindow.classList.contains("minimized")) return;
@@ -83,6 +87,54 @@
     document.addEventListener("mousemove", e => {
         lastCursorX = e.clientX;
         updateFaceDisplay();
+    });
+
+    nullWindow.addEventListener("mouseleave", () => {
+        pettingDetected = false;
+        pettingHistory = [];
+        lastPetX = null;
+        if (currentFace === faces.happy) {
+            currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
+            updateFaceDisplay();
+        }
+    });
+
+    nullWindow.addEventListener("mousemove", e => {
+        if (!isMouseDown) return;
+        const now = Date.now(), x = e.clientX;
+        if (lastPetX !== null) {
+            pettingHistory.push({ x, time: now });
+            pettingHistory = pettingHistory.filter(p => now - p.time < 500);
+            let changes = 0;
+            for (let i = 2; i < pettingHistory.length; i++) {
+                const dx1 = pettingHistory[i - 2].x - pettingHistory[i - 1].x;
+                const dx2 = pettingHistory[i - 1].x - pettingHistory[i].x;
+                if (dx1 * dx2 < 0) changes++;
+            }
+            if (changes >= 3 && !pettingDetected) {
+                pettingDetected = true;
+                if (faceTimeout) clearTimeout(faceTimeout);
+                currentFace = faces.happy;
+                updateFaceDisplay();
+            }
+        }
+        lastPetX = x;
+        if (pettingTimeout) clearTimeout(pettingTimeout);
+        pettingTimeout = setTimeout(() => {
+            pettingDetected = false;
+            pettingHistory = [];
+            lastPetX = null;
+            if (currentFace === faces.happy) {
+                currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
+                updateFaceDisplay();
+            }
+        }, 500);
+    });
+
+    nullWindow.addEventListener("mousedown", e => {
+        nullWindow.classList.remove("bounce");
+        void nullWindow.offsetWidth;
+        nullWindow.classList.add("bounce");
     });
 
     function getDirectionalFace(baseFace, cursorX, centerX) {
@@ -154,64 +206,6 @@
             faceTimeout = null;
         }, duration);
     }
-
-    let isMouseDownOnNull = false;
-
-    nullWindow.addEventListener("mousedown", e => {
-        isMouseDownOnNull = true;
-    });
-    nullWindow.addEventListener("mouseup", e => {
-        isMouseDownOnNull = false;
-        pettingDetected = false;
-        pettingHistory = [];
-        lastPetX = null;
-        if (currentFace === faces.happy) {
-            currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
-            updateFaceDisplay();
-        }
-    });
-    nullWindow.addEventListener("mouseleave", () => {
-        isMouseDownOnNull = false;
-        pettingDetected = false;
-        pettingHistory = [];
-        lastPetX = null;
-        if (currentFace === faces.happy) {
-            currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
-            updateFaceDisplay();
-        }
-    });
-
-    nullWindow.addEventListener("mousemove", e => {
-        if (!isMouseDownOnNull) return;
-        const now = Date.now(), x = e.clientX;
-        if (lastPetX !== null) {
-            pettingHistory.push({ x, time: now });
-            pettingHistory = pettingHistory.filter(p => now - p.time < 500);
-            let changes = 0;
-            for (let i = 2; i < pettingHistory.length; i++) {
-                const dx1 = pettingHistory[i - 2].x - pettingHistory[i - 1].x;
-                const dx2 = pettingHistory[i - 1].x - pettingHistory[i].x;
-                if (dx1 * dx2 < 0) changes++;
-            }
-            if (changes >= 3 && !pettingDetected) {
-                pettingDetected = true;
-                if (faceTimeout) clearTimeout(faceTimeout);
-                currentFace = faces.happy;
-                updateFaceDisplay();
-            }
-        }
-        lastPetX = x;
-        if (pettingTimeout) clearTimeout(pettingTimeout);
-        pettingTimeout = setTimeout(() => {
-            pettingDetected = false;
-            pettingHistory = [];
-            lastPetX = null;
-            if (currentFace === faces.happy) {
-                currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
-                updateFaceDisplay();
-            }
-        }, 500);
-    });
 
     function isOverlapping(rect1, rect2) {
         return !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom);
@@ -300,6 +294,7 @@
         if (faceTimeout) clearTimeout(faceTimeout);
         currentFace = faces.shock;
         updateFaceDisplay();
+        nullWindow.classList.remove("bounce");
         nullWindow.classList.remove("shake");
         void nullWindow.offsetWidth;
         nullWindow.classList.add("shake");

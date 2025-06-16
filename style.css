@@ -276,12 +276,29 @@ main { position: relative; width: 100dvw; height: 100dvh; }
 .github-btn img { width: 25px; height: auto; opacity: 0.2; transition: transform 0.2s, opacity 0.2s; }
 .github-btn:hover img { transform: scale(1.2); opacity: 1; }
 
-@keyframes shake {
-  0%,
-  100% { transform: translateX(0); }
-  20%,
-  60% { transform: translateX(-5px); }
-  40%,
-  80% { transform: translateX(5px); }
+@keyframes bounce {
+  0%   { transform: scaleX(1) scaleY(1); }
+  20%  { transform: scaleX(1.12) scaleY(0.90); }
+  50%  { transform: scaleX(0.92) scaleY(1.10); }
+  80%  { transform: scaleX(1.05) scaleY(0.97); }
+  100% { transform: scaleX(1) scaleY(1); }
 }
-.shake { animation: shake 0.3s ease; }
+#nullWindow.bounce {
+  animation: bounce 0.3s cubic-bezier(.4,2,.6,1);
+}
+@keyframes shake {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-2px, 1px); }
+  20%  { transform: translate(3px, -1px); }
+  30%  { transform: translate(-4px, 2px); }
+  40%  { transform: translate(4px, -2px); }
+  50%  { transform: translate(-3px, 1px); }
+  60%  { transform: translate(2px, -1px); }
+  70%  { transform: translate(-1px, 2px); }
+  80%  { transform: translate(1px, -2px); }
+  90%  { transform: translate(-2px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+.shake {
+  animation: shake 0.3s cubic-bezier(.4,2,.6,1);
+}
