@@ -276,6 +276,21 @@ main { position: relative; width: 100dvw; height: 100dvh; }
 .github-btn img { width: 25px; height: auto; opacity: 0.2; transition: transform 0.2s, opacity 0.2s; }
 .github-btn:hover img { transform: scale(1.2); opacity: 1; }
 
+.null-sparkle {
+  position: absolute;
+  color: #fff;
+  font-size: 30px;
+  opacity: 0;
+  animation: sparkle-fade 0.7s linear forwards;
+  user-select: none;
+  z-index: 10000;
+}
+@keyframes sparkle-fade {
+  0%   { opacity: 0; transform: scale(0.5); }
+  50%  { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.5) translateY(-10px); }
+}
+
 @keyframes bounce {
   0%   { transform: scaleX(1) scaleY(1); }
   20%  { transform: scaleX(1.12) scaleY(0.90); }

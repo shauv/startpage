@@ -93,6 +93,7 @@
         pettingDetected = false;
         pettingHistory = [];
         lastPetX = null;
+        stopSparkles();
         if (currentFace === faces.happy) {
             currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
             updateFaceDisplay();
@@ -100,7 +101,7 @@
     });
 
     nullWindow.addEventListener("mousemove", e => {
-        if (!isMouseDown) return;
+        if (!isMouseDown || isDragging) return;
         const now = Date.now(), x = e.clientX;
         if (lastPetX !== null) {
             pettingHistory.push({ x, time: now });
@@ -116,6 +117,7 @@
                 if (faceTimeout) clearTimeout(faceTimeout);
                 currentFace = faces.happy;
                 updateFaceDisplay();
+                startSparkles();
             }
         }
         lastPetX = x;
@@ -124,6 +126,7 @@
             pettingDetected = false;
             pettingHistory = [];
             lastPetX = null;
+            stopSparkles();
             if (currentFace === faces.happy) {
                 currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
                 updateFaceDisplay();
@@ -290,6 +293,37 @@
 
     updateFaceDisplay();
 
+    let sparkleInterval = null;
+    function spawnSparkle() {
+        const rect = nullWindow.getBoundingClientRect();
+        const margin = 10;
+        const x = rect.left + Math.random() * (rect.width + margin * 2) - margin;
+        const y = rect.top + Math.random() * (rect.height + margin * 2) - margin;
+
+        const sparkle = document.createElement('div');
+        sparkle.className = 'null-sparkle';
+        sparkle.textContent = '+';
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
+
+        document.body.appendChild(sparkle);
+
+        setTimeout(() => {
+            sparkle.remove();
+        }, 700);
+    }
+    function startSparkles() {
+        if (sparkleInterval) return;
+        spawnSparkle();
+        sparkleInterval = setInterval(spawnSparkle, 350);
+    }
+    function stopSparkles() {
+        if (sparkleInterval) {
+            clearInterval(sparkleInterval);
+            sparkleInterval = null;
+        }
+    }
+
     window.showNullShockFace = function () {
         if (faceTimeout) clearTimeout(faceTimeout);
         currentFace = faces.shock;
@@ -298,11 +332,16 @@
         nullWindow.classList.remove("shake");
         void nullWindow.offsetWidth;
         nullWindow.classList.add("shake");
-        setTimeout(() => { nullWindow.classList.remove("shake"); }, 300);
+        startSparkles();
+        setTimeout(() => {
+            nullWindow.classList.remove("shake");
+            stopSparkles();
+        }, 700);
         faceTimeout = setTimeout(() => {
             currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
             updateFaceDisplay();
             faceTimeout = null;
         }, 2000);
     };
+
 })();
