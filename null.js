@@ -155,7 +155,34 @@
         }, duration);
     }
 
-    nullBody.addEventListener("mousemove", e => {
+    let isMouseDownOnNull = false;
+
+    nullWindow.addEventListener("mousedown", e => {
+        isMouseDownOnNull = true;
+    });
+    nullWindow.addEventListener("mouseup", e => {
+        isMouseDownOnNull = false;
+        pettingDetected = false;
+        pettingHistory = [];
+        lastPetX = null;
+        if (currentFace === faces.happy) {
+            currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
+            updateFaceDisplay();
+        }
+    });
+    nullWindow.addEventListener("mouseleave", () => {
+        isMouseDownOnNull = false;
+        pettingDetected = false;
+        pettingHistory = [];
+        lastPetX = null;
+        if (currentFace === faces.happy) {
+            currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
+            updateFaceDisplay();
+        }
+    });
+
+    nullWindow.addEventListener("mousemove", e => {
+        if (!isMouseDownOnNull) return;
         const now = Date.now(), x = e.clientX;
         if (lastPetX !== null) {
             pettingHistory.push({ x, time: now });
@@ -184,15 +211,6 @@
                 updateFaceDisplay();
             }
         }, 500);
-    });
-    nullBody.addEventListener("mouseleave", () => {
-        pettingDetected = false;
-        pettingHistory = [];
-        lastPetX = null;
-        if (currentFace === faces.happy) {
-            currentFace = nullDockedToTetris ? faces.happy : faces.neutral;
-            updateFaceDisplay();
-        }
     });
 
     function isOverlapping(rect1, rect2) {
